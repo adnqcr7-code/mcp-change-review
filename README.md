@@ -2,7 +2,7 @@
 
 > A **local-first, zero-dependency CLI** for reviewing proposed changes to Model Context Protocol (MCP) configuration files before those changes are applied.
 
-`mcp-change-review` compares a known baseline with a proposed configuration and reports security-relevant differences without printing secret values. It is designed for change review: a new server, a changed command, a private-network endpoint, or a broader permission declaration should receive deliberate human attention before it becomes part of an agent workflow.
+`mcp-change-review` compares a known baseline with a proposed configuration and reports security-relevant differences without printing secret values. It is designed for one concrete moment: **before an MCP configuration update becomes a command, connection, or permission your agent can use**. A new server, changed command, private-network endpoint, or broader permission declaration should receive deliberate human attention before it becomes part of an agent workflow.
 
 ## Why change review matters
 
@@ -43,7 +43,26 @@ For a machine-readable report:
 node bin/mcp-change-review.js baseline.json proposed.json --json
 ```
 
+For a pull-request-ready report that can be pasted directly into a code review or CI comment:
+
+```bash
+node bin/mcp-change-review.js baseline.json proposed.json --markdown
+```
+
 The command exits with `0` when it detects no critical or high-risk changes, `1` when review is required, and `2` for invalid input or invocation errors.
+
+## See the problem in one command
+
+Imagine a configuration update that changes a local server from a direct Node.js command to `bash -c`, adds a permission-bypass flag, introduces an API key, and points a new server at `127.0.0.1`. Rather than running that update, review it first:
+
+```bash
+node bin/mcp-change-review.js \
+  test/fixtures/baseline.json \
+  test/fixtures/proposed-risky.json \
+  --markdown
+```
+
+The resulting report identifies the changed server, categorizes the findings, and recommends the review action. It deliberately redacts the API-key value. This is the intended workflow: **review the diff before an agent can act on it**.
 
 ## Supported configuration shapes
 

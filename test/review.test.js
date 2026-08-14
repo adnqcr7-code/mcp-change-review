@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { formatReview, reviewConfigChange } from '../lib/review.js';
+import { formatReview, formatReviewMarkdown, reviewConfigChange } from '../lib/review.js';
 
 const byRule = (report, ruleId) => report.findings.find((item) => item.ruleId === ruleId);
 
@@ -78,4 +78,18 @@ test('flags changed permission declarations', () => {
   });
 
   assert.equal(byRule(report, 'permission-scope-changed')?.severity, 'high');
+});
+
+test('creates a GitHub-ready Markdown review without leaking secret values', () => {
+  const report = reviewConfigChange({
+    mcpServers: { 'notes|demo': { command: 'node', env: { API_KEY: 'old-secret' } } }
+  }, {
+    mcpServers: { 'notes|demo': { command: 'node', env: { API_KEY: 'new-secret' } } }
+  });
+  const markdown = formatReviewMarkdown(report);
+
+  assert.match(markdown, /## MCP Configuration Change Review/);
+  assert.match(markdown, /Review required before applying this configuration/);
+  assert.match(markdown, /notes\\\|demo/);
+  assert.doesNotMatch(markdown, /old-secret|new-secret/);
 });
