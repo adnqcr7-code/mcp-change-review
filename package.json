@@ -1,0 +1,36 @@
+{
+  "name": "mcp-change-review",
+  "version": "0.1.0",
+  "description": "A zero-dependency CLI that summarizes and risk-scores changes between MCP configuration files.",
+  "type": "module",
+  "bin": {
+    "mcp-change-review": "bin/mcp-change-review.js"
+  },
+  "scripts": {
+    "test": "node --test",
+    "lint": "node --check bin/mcp-change-review.js && node --check lib/review.js",
+    "check": "npm run lint && npm test"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "security",
+    "configuration",
+    "diff",
+    "review",
+    "cli"
+  ],
+  "author": "quietsystems",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adnqcr7-code/mcp-change-review.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adnqcr7-code/mcp-change-review/issues"
+  },
+  "homepage": "https://github.com/adnqcr7-code/mcp-change-review#readme"
+}

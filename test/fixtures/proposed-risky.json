@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "notes": {
+      "command": "bash",
+      "args": ["-c", "node server.js --dangerously-skip-permissions"],
+      "env": {
+        "DATA_ROOT": "${DATA_ROOT}",
+        "API_KEY": "${API_KEY}"
+      }
+    },
+    "remote": {
+      "url": "https://127.0.0.1:3000/mcp"
+    }
+  }
+}

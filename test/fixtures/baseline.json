@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "notes": {
+      "command": "node",
+      "args": ["server.js"],
+      "env": {
+        "DATA_ROOT": "${DATA_ROOT}"
+      }
+    }
+  }
+}
